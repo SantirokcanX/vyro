@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Not a Bank — El club más exclusivo de Aguascalientes. Jueves, Viernes y Sábado."/>
+  <title>NOT A BANK — Aguascalientes</title>
+
+  <!-- ── Fuentes ── -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@300;400;500;600;700&family=Syncopate:wght@400;700&display=swap" rel="stylesheet"/>
+  <!-- ── Iconos ── -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <style>
+    /* =====================================================
+       VARIABLES & RESET
+    ===================================================== */
+    :root {
+      --black:         #000000;
+      --deep:          #04040a;
+      --void:          #07070f;
+      --surface:       #0c0c18;
+
+      --purple:        #8b00ff;
+      --purple-mid:    #a020f0;
+      --blue:          #00cfff;
+      --pink:          #ff0099;
+      --violet:        #6a0dad;
+
+      --glow-purple: 0 0 8px #8b00ff, 0 0 25px rgba(139,0,255,.45), 0 0 55px rgba(139,0,255,.18);
+      --glow-blue:   0 0 8px #00cfff, 0 0 25px rgba(0,207,255,.45), 0 0 55px rgba(0,207,255,.18);
+      --glow-pink:   0 0 8px #ff0099, 0 0 25px rgba(255,0,153,.45), 0 0 55px rgba(255,0,153,.18);
+
+      --white:         #ffffff;
+      --off-white:     #e8e8f0;
+      --muted:         #7a7a9a;
+      --border:        rgba(139,0,255,.18);
+
+      --font-hero:   'Syncopate',  sans-serif;
+      --font-title:  'Bebas Neue', cursive;
+      --font-body:   'Rajdhani',   sans-serif;
+
+      --ease:      cubic-bezier(.25,.46,.45,.94);
+      --tr:        all .35s var(--ease);
+      --tr-slow:   all .7s  var(--ease);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html  { scroll-behavior: smooth; overflow-x: hidden; }
+    body  { background: var(--deep); color: var(--white); font-family: var(--font-body); cursor: none; overflow-x: hidden; }
+    a     { text-decoration: none; color: inherit; }
+    ul    { list-style: none; }
+    img   { max-width: 100%; display: block; }
+    input, textarea, select { font-family: var(--font-body); }
+    ::selection { background: var(--purple); color: var(--white); }
+
+    /* =====================================================
+       CURSOR PERSONALIZADO
+    ===================================================== */
+    #cur  { position:fixed; width:10px; height:10px; border-radius:50%; background:var(--pink); pointer-events:none; z-index:99999; transform:translate(-50%,-50%); transition:width .2s, height .2s, background .2s; mix-blend-mode:difference; box-shadow:var(--glow-pink); }
+    #cur-ring { position:fixed; width:38px; height:38px; border:1.5px solid var(--purple); border-radius:50%; pointer-events:none; z-index:99998; transform:translate(-50%,-50%); opacity:.7; }
+
+    /* =====================================================
+       LOADER
+    ===================================================== */
+    #loader {
+      position: fixed; inset: 0; background: #000; z-index: 99997;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2rem;
+      transition: opacity .9s ease, visibility .9s ease;
+    }
+    #loader.gone { opacity: 0; visibility: hidden; pointer-events: none; }
+
+    .ld-logo {
+      font-family: var(--font-hero);
+      font-size: clamp(1.6rem,5vw,2.8rem);
+      font-weight: 700;
+      letter-spacing: .35em;
+      animation: ldPulse 1.6s ease-in-out infinite;
+    }
+    .ld-logo em { color: var(--purple); font-style: normal; }
+    @keyframes ldPulse {
+      0%,100% { text-shadow: var(--glow-purple); }
+      50%      { text-shadow: var(--glow-pink); color: var(--pink); }
+    }
+
+    .ld-track { width:180px; height:2px; background:#111128; overflow:hidden; border-radius:2px; }
+    .ld-fill  { height:100%; width:0; background:linear-gradient(90deg,var(--purple),var(--pink),var(--blue)); animation:ldFill 2.6s ease forwards; box-shadow:var(--glow-purple); }
+    @keyframes ldFill { to { width:100%; } }
+
+    .ld-sub { font-size:.7rem; letter-spacing:.45em; color:var(--muted); text-transform:uppercase; }
+
+    .ld-dots { display:flex; gap:.5rem; }
+    .ld-dots span { width:6px; height:6px; border-radius:50%; animation:ldDot 1.2s ease-in-out infinite; }
+    .ld-dots span:nth-child(1){ background:var(--purple); animation-delay:0s; }
+    .ld-dots span:nth-child(2){ background:var(--pink);   animation-delay:.2s; }
+    .ld-dots span:nth-child(3){ background:var(--blue);   animation-delay:.4s; }
+    @keyframes ldDot { 0%,80%,100%{transform:scale(.6);opacity:.4} 40%{transform:scale(1);opacity:1} }
+
+    /* =====================================================
+       CANVAS PARTÍCULAS
+    ===================================================== */
+    #cv { position:fixed; inset:0; pointer-events:none; z-index:0; opacity:.35; }
+
+    /* =====================================================
+       NAVBAR
+    ===================================================== */
+    #nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 900;
+      padding: 1.4rem 3rem;
+      display: flex; align-items: center; justify-content: space-between;
+      transition: var(--tr-slow);
+    }
+    #nav.stuck {
+      background: rgba(4,4,10,.93);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      border-bottom: 1px solid var(--border);
+      padding: .9rem 3rem;
+      box-shadow: 0 4px 40px rgba(139,0,255,.1);
+    }
+
+    .nav-logo {
+      font-family: var(--font-hero);
+      font-size: .95rem;
+      font-weight: 700;
+      letter-spacing: .22em;
+      transition: var(--tr);
+    }
+    .nav-logo:hover { color: var(--pink); text-shadow: var(--glow-pink); }
+
+    .nav-links { display:flex; align-items:center; gap:2.5rem; }
+    .nav-links a {
+      font-weight: 600; font-size: .75rem; letter-spacing: .2em; text-transform: uppercase;
+      color: var(--off-white); transition: var(--tr); position: relative;
+    }
+    .nav-links a::after { content:''; position:absolute; bottom:-4px; left:0; width:0; height:1px; background:var(--purple); box-shadow:var(--glow-purple); transition:width .3s ease; }
+    .nav-links a:hover { color: var(--white); }
+    .nav-links a:hover::after { width:100%; }
+
+    .nav-btn {
+      padding: .55rem 1.5rem; font-family:var(--font-body); font-weight:700; font-size:.75rem;
+      letter-spacing:.22em; text-transform:uppercase; border:1px solid var(--purple);
+      color:var(--white); background:transparent; position:relative; overflow:hidden; transition:var(--tr); cursor:none;
+    }
+    .nav-btn::before { content:''; position:absolute; inset:0; background:var(--purple); transform:translateX(-101%); transition:transform .35s ease; z-index:-1; }
+    .nav-btn:hover { box-shadow:var(--glow-purple); }
+    .nav-btn:hover::before { transform:translateX(0); }
+
+    .hbg { display:none; flex-direction:column; gap:5px; cursor:none; padding:4px; background:none; border:none; }
+    .hbg span { display:block; width:26px; height:2px; background:var(--white); transition:var(--tr); transform-origin:center; }
+    .hbg.open span:nth-child(1) { transform:rotate(45deg) translate(5px,5px); }
+    .hbg.open span:nth-child(2) { opacity:0; }
+    .hbg.open span:nth-child(3) { transform:rotate(-45deg) translate(5px,-5px); }
+
+    .mob-menu { display:none; position:fixed; inset:0; background:rgba(0,0,0,.97); z-index:899; flex-direction:column; align-items:center; justify-content:center; gap:2.8rem; opacity:0; transition:opacity .4s ease; }
+    .mob-menu.open { display:flex; opacity:1; }
+    .mob-menu a { font-family:var(--font-title); font-size:2.8rem; letter-spacing:.12em; color:var(--off-white); transition:var(--tr); }
+    .mob-menu a:hover { color:var(--pink); text-shadow:var(--glow-pink); }
+
+    /* =====================================================
+       HERO
+    ===================================================== */
+    #hero {
+      position: relative; height: 100vh; min-height: 600px;
+      display: flex; align-items: center; justify-content: center; overflow: hidden;
+    }
+
+    .h-bg {
+      position: absolute; inset: 0; z-index: 1;
+      background:
+        radial-gradient(ellipse 75% 55% at 18% 48%, rgba(139,0,255,.3) 0%, transparent 60%),
+        radial-gradient(ellipse 55% 75% at 82% 28%, rgba(0,207,255,.18) 0%, transparent 60%),
+        radial-gradient(ellipse 45% 45% at 50% 82%, rgba(255,0,153,.22) 0%, transparent 55%),
+        linear-gradient(180deg, #000 0%, #05000d 55%, #000 100%);
+    }
+
+    .h-grid {
+      position:absolute; inset:0; z-index:2;
+      background-image: linear-gradient(rgba(139,0,255,.06) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(139,0,255,.06) 1px, transparent 1px);
+      background-size: 72px 72px;
+      animation: gridUp 18s linear infinite;
+    }
+    @keyframes gridUp { from{ background-position:0 72px; } to{ background-position:0 0; } }
+
+    .beam { position:absolute; bottom:0; width:2px; transform-origin:bottom center; z-index:3; opacity:.28; filter:blur(1px); }
+    .b1 { left:15%; background:linear-gradient(to top,var(--purple),transparent); height:65%; animation:bm1 4.5s ease-in-out infinite alternate; }
+    .b2 { left:38%; background:linear-gradient(to top,var(--blue),transparent);   height:55%; animation:bm2 5.5s ease-in-out infinite alternate; }
+    .b3 { right:22%; background:linear-gradient(to top,var(--pink),transparent);   height:70%; animation:bm3 3.8s ease-in-out infinite alternate; }
+    .b4 { right:8%;  background:linear-gradient(to top,var(--violet),transparent); height:60%; animation:bm1 6.2s ease-in-out infinite alternate-reverse; }
+    @keyframes bm1 { from{transform:rotate(-9deg)} to{transform:rotate(9deg)} }
+    @keyframes bm2 { from{transform:rotate(11deg)} to{transform:rotate(-7deg)} }
+    @keyframes bm3 { from{transform:rotate(-13deg)} to{transform:rotate(5deg)} }
+
+    .h-wrap { position:relative; z-index:10; text-align:center; padding:0 1.5rem; max-width:900px; }
+
+    .h-eyebrow {
+      font-size:.72rem; letter-spacing:.6em; color:var(--blue); text-transform:uppercase;
+      font-weight:600; margin-bottom:1.8rem;
+      opacity:0; animation:fadeUp .8s ease .3s forwards;
+      text-shadow:var(--glow-blue);
+    }
+
+    .h-title {
+      font-family: var(--font-hero);
+      font-size: clamp(3.8rem, 14vw, 12rem);
+      font-weight: 700; letter-spacing: .1em; line-height: .88;
+      margin-bottom: 1.8rem;
+      opacity:0; animation:fadeUp .8s ease .5s forwards;
+    }
+    .h-title .l1 { display:block; color:var(--white); }
+    .h-title .l2 {
+      display:block; color:transparent;
+      -webkit-text-stroke:1.5px var(--purple);
+      filter:drop-shadow(0 0 18px var(--purple));
+    }
+
+    .h-tag {
+      font-family: var(--font-body); font-weight:300;
+      font-size:clamp(.85rem,2.4vw,1.25rem);
+      letter-spacing:.35em; color:var(--off-white); text-transform:uppercase;
+      margin-bottom:3rem;
+      opacity:0; animation:fadeUp .8s ease .7s forwards;
+    }
+
+    .h-btns {
+      display:flex; gap:1.5rem; justify-content:center; flex-wrap:wrap;
+      opacity:0; animation:fadeUp .8s ease .9s forwards;
+    }
+
+    .btn-p {
+      display:inline-flex; align-items:center; gap:.6rem;
+      padding:1rem 2.6rem; font-family:var(--font-body); font-weight:700;
+      font-size:.84rem; letter-spacing:.25em; text-transform:uppercase;
+      color:var(--white); background:linear-gradient(135deg,var(--purple),var(--pink));
+      position:relative; overflow:hidden; transition:var(--tr); cursor:none;
+      clip-path:polygon(12px 0%,100% 0%,calc(100% - 12px) 100%,0% 100%);
+    }
+    .btn-p::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,var(--pink),var(--blue)); opacity:0; transition:opacity .4s ease; }
+    .btn-p:hover { box-shadow:0 0 28px rgba(139,0,255,.6),0 0 55px rgba(255,0,153,.3); transform:translateY(-2px); }
+    .btn-p:hover::before { opacity:1; }
+    .btn-p span { position:relative; z-index:1; }
+
+    .btn-s {
+      display:inline-flex; align-items:center; gap:.6rem;
+      padding:1rem 2.6rem; font-family:var(--font-body); font-weight:700;
+      font-size:.84rem; letter-spacing:.25em; text-transform:uppercase;
+      color:var(--white); border:1px solid rgba(255,255,255,.2);
+      background:rgba(255,255,255,.04); backdrop-filter:blur(10px);
+      transition:var(--tr); cursor:none;
+      clip-path:polygon(12px 0%,100% 0%,calc(100% - 12px) 100%,0% 100%);
+    }
+    .btn-s:hover { border-color:var(--blue); box-shadow:var(--glow-blue); background:rgba(0,207,255,.08); }
+
+    .h-scroll { position:absolute; bottom:2.5rem; left:50%; transform:translateX(-50%); z-index:10; display:flex; flex-direction:column; align-items:center; gap:.5rem; opacity:0; animation:fadeIn 1s ease 1.6s forwards; }
+    .h-scroll-lbl { font-size:.64rem; letter-spacing:.45em; color:var(--muted); text-transform:uppercase; }
+    .h-scroll-line { width:1px; height:48px; background:linear-gradient(to bottom,var(--purple),transparent); animation:scl 2s ease-in-out infinite; }
+    @keyframes scl { 0%,100%{opacity:1;transform:scaleY(1)} 50%{opacity:.3;transform:scaleY(.5)} }
+
+    @keyframes fadeUp { from{opacity:0;transform:translateY(38px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+
+    /* =====================================================
+       SECCIÓN — comunes
+    ===================================================== */
+    section { position:relative; z-index:2; }
+    .inner  { max-width:1180px; margin:0 auto; padding:0 2rem; }
+    .pad    { padding:7rem 0; }
+
+    .sec-lbl {
+      display:inline-flex; align-items:center; gap:.8rem;
+      font-size:.7rem; letter-spacing:.5em; color:var(--purple);
+      text-transform:uppercase; font-weight:600; margin-bottom:1.2rem;
+    }
+    .sec-lbl::before { content:''; width:28px; height:1px; background:var(--purple); box-shadow:var(--glow-purple); }
+
+    .sec-title { font-family:var(--font-title); font-size:clamp(2.8rem,7vw,5.8rem); line-height:.95; letter-spacing:.05em; margin-bottom:1.5rem; }
+    .stroke    { color:transparent; -webkit-text-stroke:1px var(--pink); filter:drop-shadow(0 0 12px var(--pink)); }
+
+    .ndiv { height:1px; background:linear-gradient(90deg,transparent,var(--purple),var(--pink),var(--blue),transparent); opacity:.35; }
+
+    .rv    { opacity:0; transform:translateY(48px); transition:opacity .85s ease,transform .85s ease; }
+    .rv-l  { opacity:0; transform:translateX(-55px); transition:opacity .85s ease,transform .85s ease; }
+    .rv-r  { opacity:0; transform:translateX(55px); transition:opacity .85s ease,transform .85s ease; }
+    .rv.on, .rv-l.on, .rv-r.on { opacity:1; transform:translate(0); }
+    .d1{transition-delay:.1s} .d2{transition-delay:.2s} .d3{transition-delay:.3s}
+    .d4{transition-delay:.4s} .d5{transition-delay:.5s}
+
+    /* =====================================================
+       ABOUT
+    ===================================================== */
+    #about { background:var(--void); }
+
+    .about-grid { display:grid; grid-template-columns:1fr 1fr; gap:6rem; align-items:center; }
+
+    .a-vis { position:relative; }
+    .a-frame {
+      padding:2px;
+      background:linear-gradient(135deg,var(--purple),var(--pink));
+      position:relative;
+    }
+    .a-frame::after {
+      content:''; position:absolute; inset:-1px; z-index:-1;
+      background:linear-gradient(135deg,var(--purple),var(--pink),var(--blue));
+      filter:blur(16px); opacity:.45;
+    }
+    .a-img {
+      width:100%; aspect-ratio:4/5;
+      background:
+        radial-gradient(ellipse at 30% 55%,rgba(139,0,255,.45) 0%,transparent 60%),
+        radial-gradient(ellipse at 70% 28%,rgba(255,0,153,.32) 0%,transparent 52%),
+        radial-gradient(ellipse at 50% 82%,rgba(0,207,255,.2)  0%,transparent 50%),
+        linear-gradient(180deg,#1a0030 0%,#000012 100%);
+      position:relative; overflow:hidden; display:flex; align-items:center; justify-content:center;
+    }
+
+    .a-floor { position:absolute; bottom:0; left:0; right:0; height:55%; background:linear-gradient(to top,rgba(139,0,255,.55) 0%,rgba(255,0,153,.3) 30%,transparent 100%); animation:flicker 3.2s ease-in-out infinite alternate; }
+    @keyframes flicker { from{opacity:.55} to{opacity:1} }
+
+    .a-silos { position:absolute; bottom:0; left:0; right:0; height:65%; overflow:hidden; }
+    .silo { position:absolute; bottom:0; transform-origin:bottom center; }
+    .silo:nth-child(1) { left:12%; width:28px; height:90px; background:rgba(0,0,0,.9); clip-path:polygon(30% 0%,70% 0%,80% 100%,20% 100%); }
+    .silo:nth-child(2) { left:32%; width:22px; height:70px; background:rgba(0,0,0,.9); clip-path:polygon(25% 0%,75% 0%,85% 100%,15% 100%); animation:sway 4s ease-in-out infinite alternate; }
+    .silo:nth-child(3) { left:52%; width:30px; height:100px; background:rgba(0,0,0,.85); clip-path:polygon(20% 0%,80% 0%,90% 100%,10% 100%); }
+    .silo:nth-child(4) { right:18%; width:24px; height:80px; background:rgba(0,0,0,.9); clip-path:polygon(28% 0%,72% 0%,82% 100%,18% 100%); animation:sway 5s ease-in-out infinite alternate-reverse; }
+    @keyframes sway { from{transform:rotate(-3deg)} to{transform:rotate(3deg)} }
+
+    .a-dj {
+      position:absolute; width:70px; height:70px; border-radius:50%;
+      border:2px solid rgba(139,0,255,.5);
+      box-shadow:0 0 30px rgba(139,0,255,.4), inset 0 0 20px rgba(139,0,255,.3);
+      animation:djSpin 6s linear infinite;
+      display:flex; align-items:center; justify-content:center; font-size:1.6rem;
+    }
+    @keyframes djSpin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+    .a-dj-inner { position:absolute; width:40px; height:40px; border-radius:50%; background:rgba(0,0,0,.8); display:flex; align-items:center; justify-content:center; font-size:1rem; animation:djSpin 6s linear infinite reverse; }
+
+    .stats-row { display:flex; gap:1.5rem; margin-bottom:2.5rem; }
+    .stat {
+      flex:1; padding:1.2rem; border:1px solid rgba(139,0,255,.22);
+      background:rgba(139,0,255,.04); text-align:center; transition:var(--tr);
+    }
+    .stat:hover { border-color:var(--purple); background:rgba(139,0,255,.12); box-shadow:var(--glow-purple); }
+    .stat-n { font-family:var(--font-title); font-size:2.4rem; color:var(--purple); text-shadow:var(--glow-purple); line-height:1; }
+    .stat-l { font-size:.7rem; letter-spacing:.2em; color:var(--muted); text-transform:uppercase; margin-top:.3rem; }
+
+    .a-text p { font-size:1.04rem; line-height:1.95; color:var(--off-white); font-weight:300; margin-bottom:1.2rem; }
+
+    .a-tags { display:flex; flex-wrap:wrap; gap:.7rem; margin-top:1.5rem; }
+    .atag {
+      padding:.3rem .9rem; font-size:.7rem; letter-spacing:.2em; text-transform:uppercase;
+      font-weight:600; border:1px solid rgba(0,207,255,.3); color:var(--blue); transition:var(--tr); cursor:default;
+    }
+    .atag:hover { background:rgba(0,207,255,.1); box-shadow:var(--glow-blue); }
+
+    /* =====================================================
+       EXPERIENCIA
+    ===================================================== */
+    #exp { background:var(--deep); }
+
+    .exp-hd { max-width:600px; margin-bottom:4rem; }
+    .exp-hd p { font-size:1.04rem; line-height:1.9; color:var(--muted); font-weight:300; }
+
+    .exp-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; }
+
+    .exp-card {
+      padding:2.8rem 2rem; border:1px solid rgba(139,0,255,.1);
+      background:rgba(139,0,255,.03); position:relative; overflow:hidden; transition:var(--tr);
+    }
+    .exp-card::before { content:''; position:absolute; bottom:0; left:0; width:0; height:2px; background:linear-gradient(90deg,var(--purple),var(--pink)); box-shadow:var(--glow-purple); transition:width .55s ease; }
+    .exp-card:hover { background:rgba(139,0,255,.08); }
+    .exp-card:hover::before { width:100%; }
+
+    .exp-ico { font-size:2.4rem; margin-bottom:1.5rem; display:block; animation:eFloat 3.2s ease-in-out infinite; }
+    .exp-card:nth-child(1) .exp-ico { filter:drop-shadow(0 0 10px var(--purple)); }
+    .exp-card:nth-child(2) .exp-ico { filter:drop-shadow(0 0 10px var(--pink));   animation-delay:1s; }
+    .exp-card:nth-child(3) .exp-ico { filter:drop-shadow(0 0 10px var(--blue));   animation-delay:2s; }
+    @keyframes eFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-7px)} }
+
+    .exp-card h3 { font-family:var(--font-title); font-size:2rem; letter-spacing:.1em; margin-bottom:1rem; }
+    .exp-card p  { font-size:.92rem; line-height:1.85; color:var(--muted); font-weight:300; }
+    .exp-list    { margin-top:1.2rem; display:flex; flex-direction:column; gap:.5rem; }
+    .exp-list li { font-size:.8rem; letter-spacing:.1em; color:var(--off-white); display:flex; align-items:center; gap:.6rem; }
+    .exp-list li::before { content:'▸'; color:var(--purple); font-size:.58rem; }
+
+    /* =====================================================
+       EVENTOS
+    ===================================================== */
+    #events { background:var(--void); }
+
+    .ev-hdr { display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:3.5rem; flex-wrap:wrap; gap:1.5rem; }
+
+    .ev-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; }
+
+    .ev-card { position:relative; overflow:hidden; cursor:none; }
+    .ev-inner { aspect-ratio:3/4; position:relative; overflow:hidden; }
+    .ev-bg { position:absolute; inset:0; transition:transform .65s ease; }
+    .ev-card:hover .ev-bg { transform:scale(1.07); }
+
+    .ev-card:nth-child(1) .ev-bg { background:radial-gradient(ellipse at 30% 40%,rgba(139,0,255,.75) 0%,transparent 60%),radial-gradient(ellipse at 70% 72%,rgba(255,0,153,.5) 0%,transparent 52%),#0a0010; }
+    .ev-card:nth-child(2) .ev-bg { background:radial-gradient(ellipse at 62% 32%,rgba(0,207,255,.72) 0%,transparent 60%),radial-gradient(ellipse at 30% 72%,rgba(106,13,173,.5) 0%,transparent 52%),#000a12; }
+    .ev-card:nth-child(3) .ev-bg { background:radial-gradient(ellipse at 50% 52%,rgba(255,0,153,.78) 0%,transparent 60%),radial-gradient(ellipse at 22% 22%,rgba(139,0,255,.4) 0%,transparent 52%),#100010; }
+    .ev-card:nth-child(4) .ev-bg { background:radial-gradient(ellipse at 68% 62%,rgba(255,190,0,.5) 0%,transparent 60%),radial-gradient(ellipse at 30% 32%,rgba(139,0,255,.6) 0%,transparent 52%),#08000a; }
+    .ev-card:nth-child(5) .ev-bg { background:radial-gradient(ellipse at 42% 42%,rgba(0,255,180,.4) 0%,transparent 60%),radial-gradient(ellipse at 72% 72%,rgba(0,207,255,.6) 0%,transparent 52%),#000a0a; }
+    .ev-card:nth-child(6) .ev-bg { background:radial-gradient(ellipse at 30% 62%,rgba(255,80,0,.4) 0%,transparent 60%),radial-gradient(ellipse at 72% 30%,rgba(255,0,153,.65) 0%,transparent 52%),#100200; }
+
+    .ev-ov {
+      position:absolute; inset:0; z-index:2;
+      background:linear-gradient(to top,rgba(0,0,0,.95) 0%,rgba(0,0,0,.3) 50%,transparent 100%);
+      display:flex; flex-direction:column; justify-content:flex-end;
+      padding:2rem 1.5rem; transition:var(--tr);
+    }
+    .ev-card:hover .ev-ov { background:linear-gradient(to top,rgba(0,0,0,.98) 0%,rgba(0,0,0,.55) 60%,rgba(0,0,0,.1) 100%); }
+
+    .ev-date { font-size:.68rem; letter-spacing:.3em; color:var(--blue); text-transform:uppercase; font-weight:600; margin-bottom:.4rem; }
+    .ev-name { font-family:var(--font-title); font-size:1.85rem; letter-spacing:.05em; line-height:1; margin-bottom:.6rem; }
+    .ev-desc { font-size:.78rem; color:var(--muted); line-height:1.65; margin-bottom:1.2rem; max-height:0; overflow:hidden; transition:max-height .4s ease; }
+    .ev-card:hover .ev-desc { max-height:64px; }
+    .ev-tag { display:inline-block; padding:.2rem .7rem; font-size:.62rem; letter-spacing:.2em; text-transform:uppercase; font-weight:700; background:rgba(139,0,255,.25); border:1px solid var(--purple); color:var(--purple); }
+
+    /* =====================================================
+       GALERÍA
+    ===================================================== */
+    #gallery { background:var(--deep); }
+
+    .gal-hd { text-align:center; margin-bottom:3.5rem; }
+
+    .gal-grid {
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      grid-template-rows:repeat(2,270px);
+      gap:3px;
+    }
+    .gal-item { position:relative; overflow:hidden; cursor:none; }
+    .gal-item:nth-child(1) { grid-column:span 2; }
+    .gal-item:nth-child(4) { grid-column:span 2; }
+
+    .gal-bg { position:absolute; inset:0; transition:transform .65s ease; }
+    .gal-item:hover .gal-bg { transform:scale(1.12); }
+
+    .gal-item:nth-child(1) .gal-bg { background:radial-gradient(ellipse at 30% 50%,rgba(139,0,255,.85) 0%,rgba(255,0,153,.45) 42%,#040010 100%); }
+    .gal-item:nth-child(2) .gal-bg { background:radial-gradient(ellipse at 72% 30%,rgba(0,207,255,.85) 0%,rgba(0,100,200,.4) 52%,#000512 100%); }
+    .gal-item:nth-child(3) .gal-bg { background:radial-gradient(ellipse at 40% 72%,rgba(255,0,153,.9) 0%,rgba(139,0,255,.32) 52%,#100010 100%); }
+    .gal-item:nth-child(4) .gal-bg { background:radial-gradient(ellipse at 20% 52%,rgba(139,0,255,.6) 0%,transparent 42%),radial-gradient(ellipse at 82% 52%,rgba(0,207,255,.52) 0%,transparent 42%),radial-gradient(ellipse at 52% 52%,rgba(255,0,153,.32) 0%,transparent 62%),#030010; }
+    .gal-item:nth-child(5) .gal-bg { background:radial-gradient(ellipse at 52% 30%,rgba(106,13,173,.92) 0%,rgba(255,0,153,.3) 62%,#060010 100%); }
+    .gal-item:nth-child(6) .gal-bg { background:radial-gradient(ellipse at 62% 62%,rgba(255,0,153,.72) 0%,rgba(139,0,255,.42) 52%,#100010 100%); }
+
+    .gal-ov { position:absolute; inset:0; background:rgba(0,0,0,0); display:flex; align-items:center; justify-content:center; transition:var(--tr); z-index:3; }
+    .gal-item:hover .gal-ov { background:rgba(0,0,0,.42); }
+    .gal-ico { font-size:2rem; color:var(--white); opacity:0; transform:scale(.5); transition:var(--tr); filter:drop-shadow(0 0 10px var(--purple)); }
+    .gal-item:hover .gal-ico { opacity:1; transform:scale(1); }
+
+    .gal-caption { position:absolute; bottom:0; left:0; right:0; padding:1.2rem 1rem; background:linear-gradient(to top,rgba(0,0,0,.9),transparent); z-index:4; transform:translateY(100%); transition:transform .4s ease; }
+    .gal-item:hover .gal-caption { transform:translateY(0); }
+    .gal-caption span { font-size:.72rem; letter-spacing:.2em; color:var(--off-white); text-transform:uppercase; font-weight:600; }
+
+    /* =====================================================
+       RESERVACIONES
+    ===================================================== */
+    #res { background:var(--void); }
+
+    .res-wrap { display:grid; grid-template-columns:1fr 1fr; gap:6rem; align-items:start; }
+
+    .res-info p { font-size:1rem; line-height:1.92; color:var(--muted); font-weight:300; margin-bottom:2rem; }
+    .res-feats  { display:flex; flex-direction:column; gap:1rem; }
+    .rf {
+      display:flex; align-items:center; gap:1rem; padding:.8rem 1rem;
+      border-left:2px solid var(--purple); background:rgba(139,0,255,.04); transition:var(--tr);
+    }
+    .rf:hover { background:rgba(139,0,255,.12); }
+    .rf-ico { font-size:1.2rem; filter:drop-shadow(0 0 5px var(--purple)); }
+    .rf-txt { font-size:.88rem; color:var(--off-white); letter-spacing:.05em; }
+
+    .res-form {
+      padding:3rem; border:1px solid var(--border);
+      background:rgba(139,0,255,.03); position:relative; overflow:hidden;
+    }
+    .res-form::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--purple),var(--pink)); box-shadow:var(--glow-purple); }
+
+    .form-ttl { font-family:var(--font-title); font-size:2.2rem; letter-spacing:.1em; margin-bottom:.4rem; }
+    .form-sub  { font-size:.8rem; letter-spacing:.2em; color:var(--muted); text-transform:uppercase; margin-bottom:2.5rem; }
+
+    .fg { margin-bottom:1.4rem; }
+    .flbl { display:block; font-size:.7rem; letter-spacing:.3em; color:var(--purple); text-transform:uppercase; font-weight:600; margin-bottom:.55rem; }
+    .finput {
+      width:100%; padding:.88rem 1rem; background:rgba(255,255,255,.025);
+      border:1px solid rgba(139,0,255,.22); color:var(--white);
+      font-size:.92rem; font-family:var(--font-body); font-weight:400;
+      transition:var(--tr); outline:none; -webkit-appearance:none;
+    }
+    .finput:focus { border-color:var(--purple); background:rgba(139,0,255,.06); box-shadow:0 0 0 2px rgba(139,0,255,.18),var(--glow-purple); }
+    .finput::placeholder { color:var(--muted); }
+    .finput option { background:#0a0018; color:var(--white); }
+
+    .f2 { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+
+    .btn-send {
+      width:100%; padding:1.1rem; font-family:var(--font-body); font-weight:700;
+      font-size:.88rem; letter-spacing:.28em; text-transform:uppercase;
+      color:var(--white); background:linear-gradient(135deg,var(--purple),var(--pink));
+      border:none; cursor:none; transition:var(--tr); position:relative; overflow:hidden; margin-top:.4rem;
+    }
+    .btn-send::before { content:''; position:absolute; top:0; left:-100%; width:100%; height:100%; background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent); transition:left .55s ease; }
+    .btn-send:hover { box-shadow:0 0 28px rgba(139,0,255,.55); transform:translateY(-2px); }
+    .btn-send:hover::before { left:100%; }
+    .btn-send:active { transform:translateY(0); }
+    .btn-send:disabled { opacity:.65; cursor:not-allowed; transform:none; }
+
+    #conf { display:none; text-align:center; padding:2.5rem 1rem; }
+    #conf.show { display:block; animation:confShow .5s ease forwards; }
+    @keyframes confShow { from{opacity:0;transform:scale(.9)} to{opacity:1;transform:scale(1)} }
+    .conf-ico  { font-size:3rem; margin-bottom:1rem; filter:drop-shadow(0 0 18px var(--purple)); animation:confPulse 1.6s ease-in-out infinite; }
+    @keyframes confPulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1)} }
+    .conf-ttl  { font-family:var(--font-title); font-size:2.6rem; color:var(--purple); text-shadow:var(--glow-purple); margin-bottom:.5rem; }
+    .conf-txt  { color:var(--off-white); font-size:.95rem; line-height:1.75; }
+
+    /* =====================================================
+       UBICACIÓN
+    ===================================================== */
+    #loc { background:var(--deep); }
+
+    .loc-wrap { display:grid; grid-template-columns:1fr 1.6fr; gap:4rem; align-items:start; }
+
+    .loc-addr { font-family:var(--font-title); font-size:1.5rem; letter-spacing:.08em; color:var(--off-white); line-height:1.45; margin-bottom:2rem; }
+    .loc-addr span { color:var(--purple); text-shadow:var(--glow-purple); }
+
+    .loc-details { display:flex; flex-direction:column; gap:1.1rem; margin-bottom:2.5rem; }
+    .ldet {
+      display:flex; align-items:center; gap:1rem; padding:.8rem 1rem;
+      background:rgba(255,255,255,.02); border:1px solid rgba(255,255,255,.05); transition:var(--tr);
+    }
+    .ldet:hover { border-color:rgba(139,0,255,.3); background:rgba(139,0,255,.05); }
+    .lico { width:36px; height:36px; display:flex; align-items:center; justify-content:center; background:rgba(139,0,255,.15); border:1px solid rgba(139,0,255,.3); color:var(--purple); font-size:.88rem; flex-shrink:0; }
+    .ltxt { font-size:.86rem; color:var(--off-white); line-height:1.5; }
+    .ltxt strong { display:block; font-size:.68rem; letter-spacing:.22em; text-transform:uppercase; color:var(--muted); margin-bottom:.1rem; }
+
+    .btn-maps {
+      display:inline-flex; align-items:center; gap:.7rem;
+      padding:.9rem 2rem; font-family:var(--font-body); font-weight:700;
+      font-size:.8rem; letter-spacing:.2em; text-transform:uppercase;
+      border:1px solid var(--blue); color:var(--blue); background:rgba(0,207,255,.05);
+      transition:var(--tr); cursor:pointer;
+    }
+    .btn-maps:hover { background:rgba(0,207,255,.14); box-shadow:var(--glow-blue); }
+
+    .map-shell { position:relative; border:1px solid var(--border); }
+    .map-shell::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--purple),var(--blue)); box-shadow:var(--glow-blue); z-index:1; }
+    .map-shell iframe { width:100%; height:430px; border:none; display:block; filter:grayscale(.25) invert(.88) hue-rotate(175deg) brightness(.58) saturate(1.5); }
+
+    /* =====================================================
+       CONTACTO / REDES
+    ===================================================== */
+    #contact { background:var(--void); text-align:center; }
+    .ct-inner { max-width:720px; margin:0 auto; }
+
+    .ct-title { font-family:var(--font-title); font-size:clamp(2.6rem,6vw,5.2rem); line-height:.95; letter-spacing:.05em; margin-bottom:1.5rem; }
+    .ct-sub   { font-size:.98rem; color:var(--muted); font-weight:300; letter-spacing:.1em; margin-bottom:3.5rem; }
+
+    /* bloque Instagram destacado */
+    .ig-block {
+      display:inline-flex; flex-direction:column; align-items:center; gap:.8rem;
+      padding:2.5rem 3rem; border:1px solid rgba(255,255,255,.08);
+      background:linear-gradient(135deg,rgba(225,48,108,.08),rgba(139,0,255,.08));
+      margin-bottom:3rem; transition:var(--tr); width:100%; max-width:420px;
+    }
+    .ig-block:hover { border-color:rgba(225,48,108,.5); box-shadow:0 0 30px rgba(225,48,108,.25); }
+    .ig-icon { font-size:2.8rem; background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .ig-handle { font-family:var(--font-title); font-size:1.8rem; letter-spacing:.1em; }
+    .ig-stats  { font-size:.78rem; letter-spacing:.2em; color:var(--muted); text-transform:uppercase; }
+    .ig-cta    { font-size:.75rem; letter-spacing:.25em; text-transform:uppercase; font-weight:700; color:var(--pink); margin-top:.4rem; }
+
+    .socials { display:flex; justify-content:center; flex-wrap:wrap; gap:1.2rem; margin-bottom:3rem; }
+    .soc {
+      display:inline-flex; align-items:center; gap:.7rem;
+      padding:.82rem 1.7rem; font-family:var(--font-body); font-weight:600;
+      font-size:.78rem; letter-spacing:.2em; text-transform:uppercase;
+      border:1px solid rgba(255,255,255,.12); color:var(--white); background:transparent;
+      transition:var(--tr); cursor:pointer;
+    }
+    .soc.tk:hover { border-color:#69c9d0; box-shadow:0 0 18px rgba(105,201,208,.35); color:#69c9d0; }
+    .soc.wa:hover { border-color:#25d366; box-shadow:0 0 18px rgba(37,211,102,.35); color:#25d366; }
+    .soc.fb:hover { border-color:#1877f2; box-shadow:0 0 18px rgba(24,119,242,.35); color:#1877f2; }
+
+    .ct-phone { font-family:var(--font-title); font-size:1.5rem; letter-spacing:.2em; margin-bottom:.4rem; }
+    .ct-phone a:hover { color:var(--purple); text-shadow:var(--glow-purple); }
+    .ct-email { font-size:.84rem; color:var(--muted); letter-spacing:.1em; }
+    .ct-email a:hover { color:var(--blue); }
+
+    /* =====================================================
+       FOOTER
+    ===================================================== */
+    footer {
+      background:#000; padding:2.8rem 2rem; text-align:center;
+      border-top:1px solid rgba(139,0,255,.15); position:relative; z-index:2;
+    }
+    .ft-logo { font-family:var(--font-hero); font-size:1.1rem; letter-spacing:.38em; margin-bottom:1rem; }
+    .ft-copy  { font-size:.72rem; color:var(--muted); letter-spacing:.18em; }
+    .ft-copy span { color:var(--purple); }
+
+    /* =====================================================
+       MUSIC TOGGLE
+    ===================================================== */
+    #mfloat {
+      position:fixed; bottom:2rem; right:2rem; z-index:5000;
+      width:52px; height:52px; border-radius:50%; border:1px solid var(--purple);
+      background:rgba(0,0,0,.72); color:var(--purple); font-size:1.05rem;
+      display:flex; align-items:center; justify-content:center;
+      cursor:none; transition:var(--tr); backdrop-filter:blur(10px);
+    }
+    #mfloat:hover { background:rgba(139,0,255,.22); box-shadow:var(--glow-purple); }
+    #mfloat.playing { border-color:var(--pink); color:var(--pink); box-shadow:var(--glow-pink); }
+    .mbars { display:flex; gap:3px; align-items:flex-end; }
+    .mbars span { width:3px; border-radius:2px; background:var(--pink); animation:mbar .8s ease-in-out infinite; }
+    .mbars span:nth-child(1){height:8px;animation-delay:0s}
+    .mbars span:nth-child(2){height:14px;animation-delay:.15s}
+    .mbars span:nth-child(3){height:10px;animation-delay:.3s}
+    @keyframes mbar { 0%,100%{transform:scaleY(.5)} 50%{transform:scaleY(1.25)} }
+
+    /* =====================================================
+       RESPONSIVE
+    ===================================================== */
+    @media (max-width:1024px) {
+      .about-grid,.res-wrap { grid-template-columns:1fr; gap:3rem; }
+      .a-vis { max-width:480px; margin:0 auto; }
+      .exp-grid { grid-template-columns:1fr; }
+      .ev-grid  { grid-template-columns:repeat(2,1fr); }
+      .gal-grid { grid-template-columns:repeat(2,1fr); grid-template-rows:auto; }
+      .gal-item:nth-child(1),.gal-item:nth-child(4) { grid-column:span 1; }
+      .loc-wrap { grid-template-columns:1fr; }
+    }
+    @media (max-width:768px) {
+      .nav-links,.nav-btn { display:none; }
+      .hbg { display:flex; }
+      #nav { padding:1rem 1.5rem; }
+      #nav.stuck { padding:.75rem 1.5rem; }
+      .pad { padding:5rem 0; }
+      .ev-grid { grid-template-columns:1fr; }
+      .f2 { grid-template-columns:1fr; }
+      .stats-row { gap:1rem; }
+      .res-form { padding:2rem 1.5rem; }
+      .socials { gap:.8rem; }
+      .soc { padding:.7rem 1.1rem; font-size:.72rem; }
+      .ig-block { padding:2rem 1.5rem; }
+      #cur,#cur-ring { display:none; }
+      body { cursor:auto; }
+      .btn-p,.btn-s,.nav-btn,.btn-send,.soc,.ig-block,.btn-maps,.ev-card,#mfloat { cursor:pointer; }
+    }
+    @media (max-width:480px) {
+      .h-btns { flex-direction:column; align-items:center; }
+      .gal-grid { grid-template-columns:1fr; }
+      .stats-row { flex-wrap:wrap; }
+      .ev-hdr { flex-direction:column; align-items:flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══ CURSOR ══ -->
+  <div id="cur"></div>
+  <div id="cur-ring"></div>
+
+  <!-- ══ LOADER ══ -->
+  <div id="loader">
+    <div class="ld-dots"><span></span><span></span><span></span></div>
+    <div class="ld-logo">NOT A <em>BANK</em></div>
+    <div class="ld-track"><div class="ld-fill"></div></div>
+    <div class="ld-sub">Aguascalientes · Entrando a la noche…</div>
+  </div>
+
+  <!-- ══ PARTÍCULAS ══ -->
+  <canvas id="cv"></canvas>
+
+  <!-- ══ AUDIO ══ -->
+  <audio id="bgm" loop>
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg"/>
+  </audio>
+
+  <!-- ══════════════════════════
+       NAVBAR
+  ══════════════════════════ -->
+  <nav id="nav">
+    <a href="#hero" class="nav-logo">NOT A BANK</a>
+    <ul class="nav-links">
+      <li><a href="#about">Nosotros</a></li>
+      <li><a href="#exp">Experiencia</a></li>
+      <li><a href="#events">Eventos</a></li>
+      <li><a href="#gallery">Galería</a></li>
+      <li><a href="#loc">Ubicación</a></li>
+    </ul>
+    <a href="#res" class="nav-btn">Reservar</a>
+    <button class="hbg" id="hbg" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- menú móvil -->
+  <div class="mob-menu" id="mob">
+    <a href="#about"   onclick="closeM()">Nosotros</a>
+    <a href="#exp"     onclick="closeM()">Experiencia</a>
+    <a href="#events"  onclick="closeM()">Eventos</a>
+    <a href="#gallery" onclick="closeM()">Galería</a>
+    <a href="#res"     onclick="closeM()">Reservar</a>
+    <a href="#loc"     onclick="closeM()">Ubicación</a>
+    <a href="#contact" onclick="closeM()">Contacto</a>
+  </div>
+
+  <!-- ══════════════════════════
+       HERO
+  ══════════════════════════ -->
+  <section id="hero">
+    <div class="h-bg"></div>
+    <div class="h-grid"></div>
+    <div class="beam b1"></div>
+    <div class="beam b2"></div>
+    <div class="beam b3"></div>
+    <div class="beam b4"></div>
+
+    <div class="h-wrap">
+      <p class="h-eyebrow">— Aguascalientes, México · Jue · Vie · Sáb —</p>
+      <h1 class="h-title">
+        <span class="l1">NOT A</span>
+        <span class="l2">BANK</span>
+      </h1>
+      <p class="h-tag">Where the night has no limits</p>
+      <div class="h-btns">
+        <a href="#res"     class="btn-p"><span>✦ Reservar Ahora</span></a>
+        <a href="#exp"     class="btn-s"><span>Descubrir más</span></a>
+      </div>
+    </div>
+
+    <div class="h-scroll">
+      <span class="h-scroll-lbl">Scroll</span>
+      <div class="h-scroll-line"></div>
+    </div>
+  </section>
+
+  <div class="ndiv"></div>
+
+  <!-- ══════════════════════════
+       ABOUT
+  ══════════════════════════ -->
+  <section id="about" class="pad">
+    <div class="inner">
+      <div class="about-grid">
+
+        <div class="a-vis rv-l">
+          <div class="a-frame">
+            <div class="a-img">
+              <div class="a-floor"></div>
+              <div class="a-silos">
+                <div class="silo"></div><div class="silo"></div>
+                <div class="silo"></div><div class="silo"></div>
+              </div>
+              <div class="a-dj">
+                <div class="a-dj-inner">🎧</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="a-text rv-r">
+          <div class="stats-row">
+            <div class="stat rv d1"><div class="stat-n">500+</div><div class="stat-l">Capacidad</div></div>
+            <div class="stat rv d2"><div class="stat-n">Jue–Sáb</div><div class="stat-l">Días abierto</div></div>
+            <div class="stat rv d3"><div class="stat-n">11K</div><div class="stat-l">Seguidores IG</div></div>
+          </div>
+          <span class="sec-lbl rv d1">Sobre el lugar</span>
+          <h2 class="sec-title rv d2">El club<br><span class="stroke">de Ags.</span></h2>
+          <p>Not a Bank es el club nocturno más exclusivo de Aguascalientes. Una propuesta diseñada por <strong>The People Behind</strong> para quienes entienden que la noche es una experiencia de vida — no solo una salida.</p>
+          <p>Ubicados sobre el Blvd. Colosio, combinamos la mejor música, barras premium y una atmósfera de luces y energía que convierte cada jueves, viernes y sábado en una noche irrepetible.</p>
+          <div class="a-tags">
+            <span class="atag">Nightlife</span>
+            <span class="atag">DJ Sets</span>
+            <span class="atag">VIP Lounge</span>
+            <span class="atag">Open Bar</span>
+            <span class="atag">Aguascalientes</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="ndiv"></div>
+
+  <!-- ══════════════════════════
+       EXPERIENCIA
+  ══════════════════════════ -->
+  <section id="exp" class="pad">
+    <div class="inner">
+      <div class="exp-hd rv">
+        <span class="sec-lbl">La experiencia</span>
+        <h2 class="sec-title">Todo lo que<br><span class="stroke">necesitas</span></h2>
+        <p>Tres pilares que hacen de cada visita un recuerdo imborrable. Música, bebidas y un ambiente que no encontrarás en ningún otro lugar de Aguascalientes.</p>
+      </div>
+      <div class="exp-grid">
+
+        <div class="exp-card rv d1">
+          <span class="exp-ico">🎧</span>
+          <h3>MÚSICA</h3>
+          <p>DJs residentes e invitados internacionales. Donde los géneros se fusionan y la noche cobra vida.</p>
+          <ul class="exp-list">
+            <li>Electrónica & Tech House</li>
+            <li>Reggaetón & Urbano</li>
+            <li>R&B & Hip-Hop</li>
+            <li>DJ Sets de 5+ horas</li>
+            <li>Sonido de clase mundial</li>
+          </ul>
+        </div>
+
+        <div class="exp-card rv d2">
+          <span class="exp-ico">🍸</span>
+          <h3>BEBIDAS</h3>
+          <p>Cocteles de autor, spirits premium y servicio de botella VIP que eleva la noche a otro nivel.</p>
+          <ul class="exp-list">
+            <li>Cocteles de diseñador</li>
+            <li>Servicios botella VIP</li>
+            <li>Champagne & Spirits</li>
+            <li>Bartenders premiados</li>
+            <li>Barra premium completa</li>
+          </ul>
+        </div>
+
+        <div class="exp-card rv d3">
+          <span class="exp-ico">✨</span>
+          <h3>AMBIENTE</h3>
+          <p>Iluminación inmersiva, energía única y arquitectura diseñada para que cada sentido esté en modo fiesta.</p>
+          <ul class="exp-list">
+            <li>Luces LED programadas</li>
+            <li>Efectos visuales en vivo</li>
+            <li>Zonas VIP privadas</li>
+            <li>Pista principal amplia</li>
+            <li>Dress code elegante</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="ndiv"></div>
+
+  <!-- ══════════════════════════
+       EVENTOS
+  ══════════════════════════ -->
+  <section id="events" class="pad">
+    <div class="inner">
+      <div class="ev-hdr">
+        <div class="rv">
+          <span class="sec-lbl">Agenda</span>
+          <h2 class="sec-title">Próximas<br><span class="stroke">noches</span></h2>
+        </div>
+        <a href="#res" class="btn-s rv">Reservar mesa</a>
+      </div>
+
+      <div class="ev-grid">
+        <div class="ev-card rv d1">
+          <div class="ev-inner"><div class="ev-bg"></div>
+            <div class="ev-ov">
+              <span class="ev-date">Jue 24 Abr · 11pm</span>
+              <h3 class="ev-name">THURSDAY HEAT</h3>
+              <p class="ev-desc">El jueves que todos esperan. Reggaetón y urbano en su máxima expresión.</p>
+              <span class="ev-tag">Jueves</span>
+            </div>
+          </div>
+        </div>
+        <div class="ev-card rv d2">
+          <div class="ev-inner"><div class="ev-bg"></div>
+            <div class="ev-ov">
+              <span class="ev-date">Vie 25 Abr · 11pm</span>
+              <h3 class="ev-name">LADIES NIGHT</h3>
+              <p class="ev-desc">Noche dedicada a ellas. Copa de bienvenida y acceso preferencial garantizado.</p>
+              <span class="ev-tag">Ladies Free</span>
+            </div>
+          </div>
+        </div>
+        <div class="ev-card rv d3">
+          <div class="ev-inner"><div class="ev-bg"></div>
+            <div class="ev-ov">
+              <span class="ev-date">Sáb 26 Abr · 11pm</span>
+              <h3 class="ev-name">DJ INVITADO</h3>
+              <p class="ev-desc">Un headliner especial toma la cabina. Techno y House en su mejor forma.</p>
+              <span class="ev-tag">Headliner</span>
+            </div>
+          </div>
+        </div>
+        <div class="ev-card rv d1">
+          <div class="ev-inner"><div class="ev-bg"></div>
+            <div class="ev-ov">
+              <span class="ev-date">Jue 1 May · 10pm</span>
+              <h3 class="ev-name">GOLD VIP NIGHT</h3>
+              <p class="ev-desc">Solo por reservación. Mesa VIP, botella incluida y show sorpresa.</p>
+              <span class="ev-tag">Reservación</span>
+            </div>
+          </div>
+        </div>
+        <div class="ev-card rv d2">
+          <div class="ev-inner"><div class="ev-bg"></div>
+            <div class="ev-ov">
+              <span class="ev-date">Vie 2 May · 11pm</span>
+              <h3 class="ev-name">PINK FRIDAY</h3>
+              <p class="ev-desc">Dress code rosa obligatorio. Premios al mejor look y cocteles especiales.</p>
+              <span class="ev-tag">Temático</span>
+            </div>
+          </div>
+        </div>
+        <div class="ev-card rv d3">
+          <div class="ev-inner"><div class="ev-bg"></div>
+            <div class="ev-ov">
+              <span class="ev-date">Sáb 3 May · 11pm</span>
+              <h3 class="ev-name">CLOSING NIGHT</h3>
+              <p class="ev-desc">House y Melodic Techno. Cuatro DJs en rotación hasta el amanecer.</p>
+              <span class="ev-tag">All Night</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="ndiv"></div>
+
+  <!-- ══════════════════════════
+       GALERÍA
+  ══════════════════════════ -->
+  <section id="gallery" class="pad">
+    <div class="inner">
+      <div class="gal-hd rv">
+        <span class="sec-lbl" style="justify-content:center">Galería</span>
+        <h2 class="sec-title">El ambiente<br><span class="stroke">que te espera</span></h2>
+      </div>
+      <div class="gal-grid">
+        <div class="gal-item rv d1"><div class="gal-bg"></div><div class="gal-ov"><i class="gal-ico fas fa-expand"></i></div><div class="gal-caption"><span>La pista principal</span></div></div>
+        <div class="gal-item rv d2"><div class="gal-bg"></div><div class="gal-ov"><i class="gal-ico fas fa-expand"></i></div><div class="gal-caption"><span>Zona VIP</span></div></div>
+        <div class="gal-item rv d3"><div class="gal-bg"></div><div class="gal-ov"><i class="gal-ico fas fa-expand"></i></div><div class="gal-caption"><span>La barra</span></div></div>
+        <div class="gal-item rv d4"><div class="gal-bg"></div><div class="gal-ov"><i class="gal-ico fas fa-expand"></i></div><div class="gal-caption"><span>Show de luces</span></div></div>
+        <div class="gal-item rv d1"><div class="gal-bg"></div><div class="gal-ov"><i class="gal-ico fas fa-expand"></i></div><div class="gal-caption"><span>DJ Set en vivo</span></div></div>
+        <div class="gal-item rv d2"><div class="gal-bg"></div><div class="gal-ov"><i class="gal-ico fas fa-expand"></i></div><div class="gal-caption"><span>Crowd & vibras</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="ndiv"></div>
+
+  <!-- ══════════════════════════
+       RESERVACIONES
+  ══════════════════════════ -->
+  <section id="res" class="pad">
+    <div class="inner">
+      <div class="res-wrap">
+        <div class="res-info">
+          <span class="sec-lbl rv">Reservaciones</span>
+          <h2 class="sec-title rv d1">Asegura<br>tu <span class="stroke">lugar</span></h2>
+          <p class="rv d2">Las mesas se agotan rápido. Reserva tu experiencia VIP y garantiza el mejor lugar para ti y tu grupo en Not a Bank Aguascalientes.</p>
+          <div class="res-feats">
+            <div class="rf rv d2"><span class="rf-ico">💎</span><span class="rf-txt">Acceso prioritario sin filas</span></div>
+            <div class="rf rv d3"><span class="rf-ico">🥂</span><span class="rf-txt">Botella de bienvenida en grupos de 6+</span></div>
+            <div class="rf rv d4"><span class="rf-ico">🎯</span><span class="rf-txt">Mesa reservada en zona exclusiva</span></div>
+            <div class="rf rv d5"><span class="rf-ico">📱</span><span class="rf-txt">Confirmación rápida por WhatsApp</span></div>
+          </div>
+        </div>
+
+        <div class="res-form rv-r">
+          <div id="resFormEl">
+            <h3 class="form-ttl">RESERVA</h3>
+            <p class="form-sub">Completa el formulario — te contactamos en minutos</p>
+
+            <div class="fg">
+              <label class="flbl" for="rNombre">Nombre completo</label>
+              <input class="finput" type="text" id="rNombre" placeholder="Tu nombre completo" autocomplete="off"/>
+            </div>
+            <div class="f2">
+              <div class="fg">
+                <label class="flbl" for="rTel">Teléfono</label>
+                <input class="finput" type="tel" id="rTel" placeholder="+52 449 000 0000"/>
+              </div>
+              <div class="fg">
+                <label class="flbl" for="rPers">Personas</label>
+                <select class="finput" id="rPers">
+                  <option value="">Selecciona</option>
+                  <option>1 – 2 personas</option>
+                  <option>3 – 5 personas</option>
+                  <option>6 – 10 personas</option>
+                  <option>11 – 20 personas</option>
+                  <option>Grupo 20+</option>
+                </select>
+              </div>
+            </div>
+            <div class="f2">
+              <div class="fg">
+                <label class="flbl" for="rFecha">Fecha</label>
+                <input class="finput" type="date" id="rFecha"/>
+              </div>
+              <div class="fg">
+                <label class="flbl" for="rTipo">Tipo de reserva</label>
+                <select class="finput" id="rTipo">
+                  <option value="">Selecciona</option>
+                  <option>Mesa VIP</option>
+                  <option>Acceso general</option>
+                  <option>Cumpleaños 🎂</option>
+                  <option>Corporativo</option>
+                </select>
+              </div>
+            </div>
+            <button class="btn-send" id="btnSend" onclick="sendRes()">
+              Enviar reservación ✦
+            </button>
+          </div>
+
+          <div id="conf">
+            <div class="conf-ico">✦</div>
+            <div class="conf-ttl">¡RESERVA ENVIADA!</div>
+            <p class="conf-txt">
+              Tu solicitud fue recibida con éxito.<br>
+              Nuestro equipo se comunicará contigo muy pronto.<br><br>
+              <strong style="color:var(--purple)">Not a Bank Aguascalientes te espera. 🖤</strong>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="ndiv"></div>
+
+  <!-- ══════════════════════════
+       UBICACIÓN — Google Maps real
+  ══════════════════════════ -->
+  <section id="loc" class="pad">
+    <div class="inner">
+      <div class="loc-wrap">
+
+        <div>
+          <span class="sec-lbl rv">Encuéntranos</span>
+          <h2 class="sec-title rv d1">Dónde<br><span class="stroke">estamos</span></h2>
+          <p class="loc-addr rv d2">
+            <span>Blvd. Luis Donaldo<br>Colosio Murrieta 645</span><br>
+            Aguascalientes, Ags.<br>
+            México, C.P. 20120
+          </p>
+          <div class="loc-details">
+            <div class="ldet rv d2">
+              <div class="lico"><i class="fas fa-clock"></i></div>
+              <div class="ltxt"><strong>Horario</strong>Jueves, Viernes y Sábado · 10:00 PM – 5:00 AM</div>
+            </div>
+            <div class="ldet rv d3">
+              <div class="lico"><i class="fas fa-ticket-alt"></i></div>
+              <div class="ltxt"><strong>Cover</strong>Consulta en @notabank.club cada semana</div>
+            </div>
+            <div class="ldet rv d4">
+              <div class="lico"><i class="fas fa-car"></i></div>
+              <div class="ltxt"><strong>Estacionamiento</strong>Valet parking disponible en entrada principal</div>
+            </div>
+            <div class="ldet rv d5">
+              <div class="lico"><i class="fas fa-id-card"></i></div>
+              <div class="ltxt"><strong>Acceso</strong>Mayores de 18 años · Dress code elegante</div>
+            </div>
+          </div>
+          <a class="btn-maps rv d5"
+             href="https://www.google.com/maps/place/Not+a+Bank/@21.886,-102.306,17z"
+             target="_blank" rel="noopener noreferrer">
+            <i class="fas fa-map-marker-alt"></i> Abrir en Google Maps
+          </a>
+        </div>
+
+        <!-- Mapa embebido real — Not a Bank, Aguascalientes -->
+        <div class="map-shell rv-r">
+          <iframe
+            title="Not a Bank — Blvd. Colosio 645, Aguascalientes"
+            loading="lazy"
+            allowfullscreen
+            referrerpolicy="no-referrer-when-downgrade"
+            src="https://maps.google.com/maps?q=Not+a+Bank+Aguascalientes+Mexico&output=embed&hl=es&z=16">
+          </iframe>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="ndiv"></div>
+
+  <!-- ══════════════════════════
+       CONTACTO / REDES
+  ══════════════════════════ -->
+  <section id="contact" class="pad">
+    <div class="inner">
+      <div class="ct-inner">
+        <span class="sec-lbl rv" style="justify-content:center">Contacto</span>
+        <h2 class="ct-title rv d1">Síguenos<br><span class="stroke">en Instagram</span></h2>
+        <p class="ct-sub rv d2">
+          Entérate de eventos, preventa y noches especiales antes que nadie
+        </p>
+
+        <!-- Instagram oficial -->
+        <a class="ig-block rv d3"
+           href="https://www.instagram.com/notabank.club/"
+           target="_blank" rel="noopener noreferrer">
+          <i class="ig-icon fab fa-instagram"></i>
+          <div class="ig-handle">@notabank.club</div>
+          <div class="ig-stats">11K seguidores · Aguascalientes</div>
+          <div class="ig-cta">Ver perfil en Instagram ↗</div>
+        </a>
+
+        <!-- redes secundarias -->
+        <div class="socials rv d4">
+          <a class="soc tk"
+             href="https://www.tiktok.com/@notabank.club"
+             target="_blank" rel="noopener noreferrer">
+            <i class="fab fa-tiktok"></i> TikTok
+          </a>
+          <a class="soc wa"
+             href="https://wa.me/524499000000"
+             target="_blank" rel="noopener noreferrer">
+            <i class="fab fa-whatsapp"></i> WhatsApp
+          </a>
+          <a class="soc fb"
+             href="https://www.facebook.com/thepeoplebehindgroup"
+             target="_blank" rel="noopener noreferrer">
+            <i class="fab fa-facebook-f"></i> Facebook
+          </a>
+        </div>
+
+        <div class="ct-phone rv d5">
+          <a href="tel:+524499000000">+52 449 900 0000</a>
+        </div>
+        <div class="ct-email rv d5" style="margin-top:.5rem">
+          <a href="mailto:info@notabank.club">info@notabank.club</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ FOOTER ══ -->
+  <footer>
+    <div class="ft-logo">NOT A BANK</div>
+    <p class="ft-copy">
+      © 2025 Not a Bank · Aguascalientes, México ·
+      Jue – Sáb · By <span>@thepeople.behind</span>
+    </p>
+  </footer>
+
+  <!-- ══ MUSIC TOGGLE ══ -->
+  <button id="mfloat" title="Toggle música" aria-label="Música" onclick="toggleBGM()">
+    <i class="fas fa-music"></i>
+  </button>
+
+  <!-- ══════════════════════════
+       JAVASCRIPT
+  ══════════════════════════ -->
+  <script>
+    /* ── LOADER ── */
+    window.addEventListener('load', () => {
+      setTimeout(() => document.getElementById('loader').classList.add('gone'), 2900);
+    });
+
+    /* ── CURSOR ── */
+    const cur  = document.getElementById('cur');
+    const curR = document.getElementById('cur-ring');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      cur.style.left = mx + 'px'; cur.style.top = my + 'px';
+    });
+    (function animR() {
+      rx += (mx - rx) * .12; ry += (my - ry) * .12;
+      curR.style.left = rx + 'px'; curR.style.top = ry + 'px';
+      requestAnimationFrame(animR);
+    })();
+    document.querySelectorAll('a,button,[class*="card"],[class*="item"],[class*="soc"]').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        cur.style.width = '20px'; cur.style.height = '20px'; cur.style.background = 'var(--purple)';
+        curR.style.width = '58px'; curR.style.height = '58px';
+      });
+      el.addEventListener('mouseleave', () => {
+        cur.style.width = '10px'; cur.style.height = '10px'; cur.style.background = 'var(--pink)';
+        curR.style.width = '38px'; curR.style.height = '38px';
+      });
+    });
+
+    /* ── NAVBAR ── */
+    window.addEventListener('scroll', () => {
+      document.getElementById('nav').classList.toggle('stuck', scrollY > 60);
+    });
+
+    /* ── HAMBURGER ── */
+    const hbgEl = document.getElementById('hbg');
+    const mobEl = document.getElementById('mob');
+    hbgEl.addEventListener('click', () => {
+      hbgEl.classList.toggle('open');
+      mobEl.classList.toggle('open');
+      document.body.style.overflow = mobEl.classList.contains('open') ? 'hidden' : '';
+    });
+    function closeM() {
+      hbgEl.classList.remove('open'); mobEl.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    /* ── SCROLL REVEAL ── */
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); obs.unobserve(e.target); } });
+    }, { threshold: .1, rootMargin: '0px 0px -35px 0px' });
+    document.querySelectorAll('.rv,.rv-l,.rv-r').forEach(el => obs.observe(el));
+
+    /* ── PARTÍCULAS ── */
+    const cnv = document.getElementById('cv');
+    const ctx = cnv.getContext('2d');
+    const COLS = ['#8b00ff','#00cfff','#ff0099','#6a0dad'];
+    let pts = [];
+
+    function resizeCv() { cnv.width = innerWidth; cnv.height = innerHeight; }
+    resizeCv(); window.addEventListener('resize', resizeCv);
+
+    class P {
+      constructor() { this.reset(); }
+      reset() {
+        this.x = Math.random() * cnv.width; this.y = Math.random() * cnv.height;
+        this.r = Math.random() * 1.8 + .3;
+        this.vx = (Math.random() - .5) * .38; this.vy = (Math.random() - .5) * .38;
+        this.c = COLS[Math.floor(Math.random() * COLS.length)];
+        this.a = Math.random() * .45 + .1;
+        this.life = Math.random() * 220 + 80; this.age = 0;
+      }
+      tick() {
+        this.x += this.vx; this.y += this.vy; this.age++;
+        if (this.age > this.life || this.x<0||this.x>cnv.width||this.y<0||this.y>cnv.height) this.reset();
+      }
+      draw() {
+        ctx.save(); ctx.globalAlpha = this.a; ctx.fillStyle = this.c;
+        ctx.shadowColor = this.c; ctx.shadowBlur = 8;
+        ctx.beginPath(); ctx.arc(this.x, this.y, this.r, 0, Math.PI*2); ctx.fill(); ctx.restore();
+      }
+    }
+    for (let i = 0; i < 130; i++) pts.push(new P());
+    (function loop() { ctx.clearRect(0,0,cnv.width,cnv.height); pts.forEach(p=>{p.tick();p.draw();}); requestAnimationFrame(loop); })();
+
+    /* ── PARALLAX HERO ── */
+    const hw = document.querySelector('.h-wrap');
+    window.addEventListener('scroll', () => {
+      if (scrollY < innerHeight) {
+        hw.style.transform = `translateY(${scrollY*.28}px)`;
+        hw.style.opacity   = 1 - scrollY/(innerHeight*.78);
+      }
+    });
+
+    /* ── FECHA MÍN ── */
+    const fd = document.getElementById('rFecha');
+    if (fd) fd.min = new Date().toISOString().split('T')[0];
+
+    /* ── RESERVACIÓN ── */
+    function sendRes() {
+      const n = document.getElementById('rNombre').value.trim();
+      const t = document.getElementById('rTel').value.trim();
+      const p = document.getElementById('rPers').value;
+      const f = document.getElementById('rFecha').value;
+
+      if (!n) { shake('rNombre'); return; }
+      if (!t) { shake('rTel');    return; }
+      if (!p) { shake('rPers');   return; }
+      if (!f) { shake('rFecha');  return; }
+
+      const btn = document.getElementById('btnSend');
+      btn.textContent = 'Enviando…'; btn.disabled = true;
+      setTimeout(() => {
+        document.getElementById('resFormEl').style.display = 'none';
+        document.getElementById('conf').classList.add('show');
+      }, 1600);
+    }
+
+    function shake(id) {
+      const el = document.getElementById(id);
+      el.style.borderColor = 'var(--pink)'; el.style.boxShadow = 'var(--glow-pink)';
+      el.animate([
+        {transform:'translateX(0)'},{transform:'translateX(-9px)'},
+        {transform:'translateX(9px)'},{transform:'translateX(-6px)'},
+        {transform:'translateX(6px)'},{transform:'translateX(0)'}
+      ],{duration:420,easing:'ease-in-out'});
+      setTimeout(() => { el.style.borderColor=''; el.style.boxShadow=''; }, 1600);
+      el.focus();
+    }
+
+    /* ── MÚSICA ── */
+    const bgm = document.getElementById('bgm');
+    const mfl = document.getElementById('mfloat');
+    let playing = false;
+
+    function toggleBGM() {
+      if (playing) {
+        bgm.pause();
+        mfl.classList.remove('playing');
+        mfl.innerHTML = '<i class="fas fa-music"></i>';
+        playing = false;
+      } else {
+        bgm.volume = .14;
+        bgm.play().catch(()=>{});
+        mfl.classList.add('playing');
+        mfl.innerHTML = '<div class="mbars"><span></span><span></span><span></span></div>';
+        playing = true;
+      }
+    }
+
+    /* ── NEON FLICKER ── */
+    function flicker() {
+      const els = document.querySelectorAll('.stroke');
+      if (els.length) {
+        const el = els[Math.floor(Math.random() * els.length)];
+        el.style.filter = 'drop-shadow(0 0 22px var(--pink)) brightness(1.6)';
+        setTimeout(() => { el.style.filter=''; }, 85);
+        setTimeout(() => {
+          el.style.filter = 'drop-shadow(0 0 22px var(--pink)) brightness(1.6)';
+          setTimeout(() => { el.style.filter=''; }, 65);
+        }, 130);
+      }
+      setTimeout(flicker, Math.random()*5500 + 2800);
+    }
+    setTimeout(flicker, 4200);
+
+    /* ── SMOOTH SCROLL ── */
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const t = document.querySelector(a.getAttribute('href'));
+        if (t) { e.preventDefault(); t.scrollIntoView({behavior:'smooth',block:'start'}); }
+      });
+    });
+  </script>
+</body>
+</html>
