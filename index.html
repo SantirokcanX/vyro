@@ -23,7 +23,7 @@ img{display:block;max-width:100%;}
 
 .nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:0 48px;height:68px;display:flex;align-items:center;justify-content:space-between;transition:background .4s,border-color .4s;border-bottom:1px solid transparent;}
 .nav.scrolled{background:rgba(8,10,15,.92);backdrop-filter:blur(16px);border-bottom-color:var(--border);}
-.nav-logo img{height:34px;width:auto;filter:invert(1) sepia(1) saturate(3) hue-rotate(195deg) brightness(1.15);}
+.nav-logo img{height:48px;width:auto;filter:invert(1) sepia(1) saturate(3) hue-rotate(195deg) brightness(1.15);}
 .nav-links{display:flex;align-items:center;gap:36px;list-style:none;}
 .nav-links a{font-family:var(--display);font-size:.75rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--gray);transition:color .2s;}
 .nav-links a:hover{color:var(--white);}
@@ -88,7 +88,7 @@ section{padding:100px 48px;}
 .proj-card{background:var(--bg2);border:1px solid var(--border);overflow:hidden;cursor:pointer;position:relative;transition:border-color .3s,transform .3s;border-radius:4px;}
 .proj-card:hover{border-color:rgba(74,99,255,.35);transform:translateY(-4px);}
 .proj-preview{position:relative;width:100%;height:320px;overflow:hidden;background:#0A0C14;}
-.proj-preview iframe{width:200%;height:200%;transform:scale(.5) translate(-50%,-50%);transform-origin:top left;pointer-events:none;border:none;}
+.proj-preview iframe{position:absolute;top:0;left:0;width:1440px;height:900px;transform:scale(0.42);transform-origin:top left;pointer-events:none;border:none;}
 .proj-preview-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(8,10,15,.9) 100%);}
 .proj-preview-btn{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s;}
 .proj-card:hover .proj-preview-btn{opacity:1;}
@@ -102,7 +102,8 @@ section{padding:100px 48px;}
 .proj-link{display:inline-flex;align-items:center;gap:8px;font-family:var(--display);font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--blue-lt);transition:gap .2s;}
 .proj-link:hover{gap:14px;}
 .proj-card-wide{grid-column:1 / -1;}
-.proj-card-wide .proj-preview{height:380px;}
+.proj-card-wide .proj-preview{height:360px;}
+.proj-card-wide .proj-preview iframe{transform:scale(0.84);}
 
 .lightbox{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.92);backdrop-filter:blur(8px);display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .35s;}
 .lightbox.open{opacity:1;pointer-events:all;}
@@ -142,7 +143,7 @@ section{padding:100px 48px;}
 
 footer{background:var(--bg2);border-top:1px solid var(--border);padding:48px 48px 32px;}
 .footer-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding-bottom:28px;border-bottom:1px solid var(--border);margin-bottom:24px;}
-.footer-logo img{height:28px;width:auto;filter:invert(1) sepia(1) saturate(3) hue-rotate(195deg) brightness(1.15);}
+.footer-logo img{height:38px;width:auto;filter:invert(1) sepia(1) saturate(3) hue-rotate(195deg) brightness(1.15);}
 .footer-nav{display:flex;gap:32px;}
 .footer-nav a{font-family:var(--display);font-size:.72rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--gray);transition:color .2s;}
 .footer-nav a:hover{color:var(--white);}
@@ -153,6 +154,11 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:48px 48p
 .reveal{opacity:0;transform:translateY(32px);transition:opacity .7s,transform .7s;}
 .reveal.visible{opacity:1;transform:translateY(0);}
 @keyframes fadeUp{to{opacity:1;transform:translateY(0);}}
+
+/* ── BINARY RAIN ── */
+#binaryCanvas{position:absolute;inset:0;width:100%;height:100%;opacity:.13;pointer-events:none;z-index:0;}
+.hero-inner{position:relative;z-index:1;}
+
 @keyframes fadeIn{to{opacity:1;}}
 @keyframes pulse{0%,100%{opacity:.5;}50%{opacity:1;}}
 
@@ -178,8 +184,8 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:48px 48p
   .footer-inner{flex-direction:column;gap:28px;}
   .footer-nav{flex-wrap:wrap;justify-content:center;gap:20px;}
   .footer-bottom{flex-direction:column;gap:8px;text-align:center;}
-  .proj-preview{height:220px;}
-  .proj-card-wide .proj-preview{height:260px;}
+  .proj-preview{height:200px;}
+  .proj-card-wide .proj-preview{height:240px;}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important;}}
 </style>
@@ -210,6 +216,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:48px 48p
 <section class="hero" id="inicio">
   <div class="hero-grid-bg"></div>
   <div class="hero-glow"></div>
+  <canvas id="binaryCanvas"></canvas>
   <div class="hero-inner">
     <div class="hero-tag">Estudio Digital &middot; Aguascalientes</div>
     <h1 class="hero-title">
@@ -328,6 +335,20 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:48px 48p
       </div>
     </div>
 
+    <div class="proj-card reveal" onclick="openLightbox('puntoyaparte','Punto &amp; Aparte BGC &middot; Aguascalientes')">
+      <div class="proj-preview">
+        <iframe src="puntoyaparte.html" loading="lazy" scrolling="no" title="Punto y Aparte Preview"></iframe>
+        <div class="proj-preview-overlay"></div>
+        <div class="proj-preview-btn"><button class="preview-open-btn">&#x2197; Ver proyecto</button></div>
+      </div>
+      <div class="proj-body">
+        <div class="proj-tags"><span class="proj-tag">Board Game Caf&eacute;</span><span class="proj-tag">Restaurante</span><span class="proj-tag">Aguascalientes</span></div>
+        <h3 class="proj-title">Punto &amp; Aparte BGC</h3>
+        <p class="proj-desc">Caf&eacute; y restaurante con m&aacute;s de 200 juegos de mesa en Aguascalientes. Identidad c&aacute;lida y l&uacute;dica, men&uacute; interactivo y experiencia digital que refleja la vibra del lugar.</p>
+        <span class="proj-link">Ver proyecto &rarr;</span>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -421,11 +442,50 @@ document.getElementById('mobileClose').addEventListener('click',()=>mm.classList
 document.querySelectorAll('.mm-link').forEach(l=>l.addEventListener('click',()=>mm.classList.remove('open')));
 const io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);}});},{threshold:.08,rootMargin:'0px 0px -32px 0px'});
 document.querySelectorAll('.reveal').forEach(r=>io.observe(r));
-const PROJ_SRCS={messicana:'index.html',osteria:'index2.html',notabank:'not-a-bank.html',ninjaramen:'ninja-ramen.html',teverde:'te-verde.html'};
+const PROJ_SRCS={messicana:'index.html',osteria:'index2.html',notabank:'not-a-bank.html',ninjaramen:'ninja-ramen.html',teverde:'te-verde.html',puntoyaparte:'puntoyaparte.html'};
 function openLightbox(key,title){const src=PROJ_SRCS[key];if(!src)return;document.getElementById('lightboxTitle').innerHTML=title;document.getElementById('lightboxFrame').src=src;document.getElementById('lightbox').classList.add('open');document.body.style.overflow='hidden';}
 function closeLightbox(){document.getElementById('lightbox').classList.remove('open');document.getElementById('lightboxFrame').src='';document.body.style.overflow='';}
 document.getElementById('lightbox').addEventListener('click',function(e){if(e.target===this)closeLightbox();});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLightbox();});
+
+// ── Binary Rain
+(function(){
+  const canvas = document.getElementById('binaryCanvas');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let cols, drops, W, H;
+  const FONT_SIZE = 14;
+  const CHARS = '01';
+  function resize(){
+    W = canvas.width = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+    cols = Math.floor(W / FONT_SIZE);
+    drops = Array(cols).fill(1);
+  }
+  function draw(){
+    ctx.fillStyle = 'rgba(8,10,15,0.05)';
+    ctx.fillRect(0,0,W,H);
+    for(let i=0;i<cols;i++){
+      const char = CHARS[Math.floor(Math.random()*CHARS.length)];
+      const bright = Math.random();
+      if(bright > 0.85){
+        ctx.fillStyle = '#FFFFFF';
+      } else if(bright > 0.5){
+        ctx.fillStyle = '#4A63FF';
+      } else {
+        ctx.fillStyle = '#1533C7';
+      }
+      ctx.font = FONT_SIZE+'px monospace';
+      ctx.fillText(char, i*FONT_SIZE, drops[i]*FONT_SIZE);
+      if(drops[i]*FONT_SIZE > H && Math.random() > 0.975) drops[i]=0;
+      drops[i]++;
+    }
+  }
+  resize();
+  window.addEventListener('resize', resize);
+  setInterval(draw, 50);
+})();
+
 </script>
 </body>
 </html>
