@@ -323,7 +323,7 @@
 
   .hero-inner{
     position:relative;
-    z-index:2;
+    z-index:5;
     width:100%;
     max-width:1180px;
     margin:0 auto;
@@ -352,6 +352,12 @@
     letter-spacing:-0.015em;
     max-width:920px;
     margin:0 auto;
+    opacity:1 !important;
+    transform:none !important;
+  }
+  .hero-eyebrow, .hero-sub, .hero-actions, .hero-stats{
+    opacity:1 !important;
+    transform:none !important;
   }
   .hero h1 span{ color:var(--ambar); }
   .hero-sub{
@@ -848,9 +854,16 @@
     .diff-grid, .games-grid, .exp-grid, .menu-grid, .test-grid{ grid-template-columns:1fr; }
     .gallery-masonry{ columns:2 160px; }
     .footer-grid{ grid-template-columns:1fr; }
-    .hero-inner{ padding-top:120px; }
+    .hero-inner{ padding-top:120px; padding-bottom:60px; }
     .games-counter{ flex-direction:column; text-align:center; padding:24px; }
     .games-counter .label{ text-align:center; }
+    .hero-die{ display:none; }
+    .hero h1{ font-size:2rem; }
+    .hero-sub{ font-size:1rem; }
+    .hero-stat{ font-size:.82rem; padding:9px 14px; }
+    .exp-grid{ grid-template-columns:1fr 1fr; }
+    .menu-grid{ grid-template-columns:repeat(2,1fr); }
+    .test-grid{ grid-template-columns:1fr; }
   }
 </style>
 </head>
@@ -1318,8 +1331,17 @@
         io.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  }, { threshold: 0.05, rootMargin: '0px 0px 0px 0px' });
   revealEls.forEach(el => io.observe(el));
+  // Fallback: force-reveal anything already in viewport on load
+  setTimeout(() => {
+    revealEls.forEach(el => {
+      const rect = el.getBoundingClientRect();
+      if(rect.top < window.innerHeight && rect.bottom > 0){
+        el.classList.add('in-view');
+      }
+    });
+  }, 100);
 
   // ===== Hero dice subtle parallax on mouse move =====
   const hero = document.querySelector('.hero');
