@@ -185,10 +185,69 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:48px 48p
   .footer-nav{flex-wrap:wrap;justify-content:center;gap:20px;}
   .footer-bottom{flex-direction:column;gap:8px;text-align:center;}
   .proj-preview{height:200px;}
-  .proj-card-wide .proj-preview{height:240px;}
+  .proj-card-wide .proj-preview{height:200px;}
+  .proj-preview iframe{transform:scale(0.22);width:1440px;height:900px;}
+  .proj-card-wide .proj-preview iframe{transform:scale(0.22);}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important;}}
+
+/* ═══════════════════════════════════════
+   CINEMATIC HERO — VYRO
+═══════════════════════════════════════ */
+.hero-sc{position:relative;height:300vh;z-index:0;}
+.hero-st{position:sticky;top:0;height:100vh;width:100%;overflow:hidden;background:var(--bg);display:flex;align-items:center;justify-content:center;}
+
+/* Glow ambiental */
+.h-glow{position:absolute;top:50%;left:50%;width:72vw;height:72vh;transform:translate(-50%,-50%);background:radial-gradient(ellipse at center,rgba(21,51,199,.22) 0%,rgba(21,51,199,.07) 40%,transparent 70%);border-radius:50%;pointer-events:none;z-index:1;will-change:opacity;}
+
+/* Canvas partículas */
+.h-canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2;will-change:opacity;}
+
+/* ── Texto gigante ── */
+.h-text{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:10;pointer-events:none;will-change:transform,opacity;}
+.h-text span{display:block;font-family:var(--display);font-weight:700;line-height:.92;text-align:center;letter-spacing:-.04em;}
+.h-w1{font-size:clamp(3rem,10.8vw,10.5rem);color:var(--white);}
+.h-w2{font-size:clamp(3rem,10.8vw,10.5rem);color:transparent;-webkit-text-stroke:1.5px rgba(245,246,250,.26);}
+.h-w3{font-size:clamp(3rem,10.8vw,10.5rem);color:var(--blue-lt);text-shadow:0 0 90px rgba(74,99,255,.32);}
+
+/* ── Laptop wrapper ── */
+.h-laptop-wrap{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:20;will-change:transform,opacity;pointer-events:none;}
+.h-laptop{position:relative;width:min(590px,82vw);filter:drop-shadow(0 60px 110px rgba(0,0,0,.88)) drop-shadow(0 0 80px rgba(21,51,199,.13));}
+
+/* Lid */
+.h-lid{position:relative;width:100%;aspect-ratio:16/10;background:linear-gradient(160deg,#252525 0%,#151515 55%,#1c1c1c 100%);border-radius:10px 10px 2px 2px;border:1.5px solid #333;overflow:hidden;transform-origin:bottom center;will-change:transform;}
+.h-lid::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.11) 30%,rgba(255,255,255,.17) 50%,rgba(255,255,255,.11) 70%,transparent);z-index:5;}
+.h-camera{position:absolute;top:9px;left:50%;transform:translateX(-50%);width:7px;height:7px;border-radius:50%;background:#080808;border:1px solid #2c2c2c;z-index:5;}
+
+/* Screen bezel */
+.h-screen{position:absolute;top:22px;left:14px;right:14px;bottom:6px;background:#040404;border-radius:4px;overflow:hidden;clip-path:inset(100% 0% 0% 0%);will-change:clip-path;}
+.h-scr-iframe{position:absolute;top:0;left:0;width:1440px;height:900px;transform-origin:top left;border:none;pointer-events:none;}
+.h-scr-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.04) 0%,transparent 45%,rgba(0,0,0,.1) 100%);pointer-events:none;z-index:3;}
+
+/* Base / teclado */
+.h-base{position:relative;width:107%;margin-left:-3.5%;height:26px;background:linear-gradient(180deg,#1e1e1e 0%,#131313 100%);border-radius:0 0 10px 10px;border:1.5px solid #2e2e2e;border-top-color:#444;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:5px;gap:3px;}
+.h-base::before{content:'';position:absolute;top:0;left:8%;right:8%;height:1px;background:rgba(255,255,255,.05);}
+.h-keys{width:80%;height:6px;background:rgba(255,255,255,.025);border-radius:2px;border:1px solid rgba(255,255,255,.04);}
+.h-pad{width:38%;height:7px;background:rgba(255,255,255,.02);border-radius:3px;border:1px solid rgba(255,255,255,.045);}
+
+/* ── Full-screen reveal ── */
+.h-reveal{position:absolute;inset:0;z-index:30;overflow:hidden;will-change:opacity;pointer-events:none;}
+.h-rev-iframe{position:absolute;top:0;left:0;width:1440px;transform-origin:top left;border:none;pointer-events:none;}
+.h-rev-vignette{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 52%,rgba(8,10,15,.7) 100%);pointer-events:none;z-index:2;}
+
+/* ── Scroll hint ── */
+.h-scroll-hint{position:absolute;bottom:34px;right:50px;display:flex;flex-direction:column;align-items:center;gap:10px;font-family:var(--display);font-size:.58rem;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--gray);z-index:15;will-change:opacity;}
+.h-scroll-line{width:1px;height:54px;background:linear-gradient(to bottom,var(--blue-lt),transparent);animation:hScrollAnim 1.9s ease-in-out infinite;}
+@keyframes hScrollAnim{0%,100%{opacity:.35;transform:scaleY(1);}50%{opacity:.85;transform:scaleY(1.06);}}
+
+@media(max-width:768px){
+  .h-laptop{width:min(340px,88vw);}
+  .h-w1,.h-w2,.h-w3{font-size:clamp(2.2rem,12.5vw,4.5rem);}
+  .h-scroll-hint{right:24px;bottom:24px;}
+}
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 </head>
 <body>
 
@@ -213,25 +272,66 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:48px 48p
   <a href="#contacto" class="mm-link">Contacto</a>
 </div>
 
-<section class="hero" id="inicio">
-  <div class="hero-grid-bg"></div>
-  <div class="hero-glow"></div>
-  <canvas id="binaryCanvas"></canvas>
-  <div class="hero-inner">
-    <div class="hero-tag">Estudio Digital &middot; Aguascalientes</div>
-    <h1 class="hero-title">
-      Dise&ntilde;o web<br>que <span class="accent">convierte</span><br>y posiciona.
-    </h1>
-    <p class="hero-sub">
-      Construimos presencias digitales de alto impacto para marcas que no quieren pasar desapercibidas. Estrategia, dise&ntilde;o y c&oacute;digo en un solo lugar.
-    </p>
-    <div class="hero-btns">
-      <a href="#trabajo" class="btn-blue">Ver proyectos</a>
-      <a href="#contacto" class="btn-ghost">Empezar proyecto</a>
+<!-- ═══ CINEMATIC HERO ═══ -->
+<div class="hero-sc" id="inicio">
+  <div class="hero-st">
+
+    <!-- Glow ambiental -->
+    <div class="h-glow" id="hGlow"></div>
+
+    <!-- Partículas -->
+    <canvas class="h-canvas" id="heroCanvas"></canvas>
+
+    <!-- FASE 1-2: Texto gigante -->
+    <div class="h-text" id="hText">
+      <span class="h-w1">DISE&Ntilde;AMOS</span>
+      <span class="h-w2">EXPERIENCIAS</span>
+      <span class="h-w3">DIGITALES</span>
     </div>
-    <div class="hero-scroll">Scroll</div>
+
+    <!-- FASE 2-4: Laptop mockup -->
+    <div class="h-laptop-wrap" id="hLaptop">
+      <div class="h-laptop">
+        <div class="h-lid" id="hLid">
+          <div class="h-camera"></div>
+          <div class="h-screen" id="hScreen">
+            <iframe
+              src="messicana.html"
+              class="h-scr-iframe"
+              id="laptopIframe"
+              tabindex="-1"
+              aria-hidden="true"></iframe>
+            <div class="h-scr-overlay"></div>
+          </div>
+        </div>
+        <div class="h-base">
+          <div class="h-keys"></div>
+          <div class="h-pad"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FASE 5: Reveal pantalla completa -->
+    <div class="h-reveal" id="hReveal">
+      <iframe
+        src="messicana.html"
+        class="h-rev-iframe"
+        id="revealIframe"
+        tabindex="-1"
+        aria-hidden="true"
+        loading="lazy"></iframe>
+      <div class="h-rev-vignette"></div>
+    </div>
+
+    <!-- Indicador de scroll -->
+    <div class="h-scroll-hint" id="hScrollHint">
+      <span>Scroll</span>
+      <div class="h-scroll-line"></div>
+    </div>
+
   </div>
-</section>
+</div>
+<!-- ═══ / CINEMATIC HERO ═══ -->
 
 <div class="stats-band">
   <div class="stats-grid">
@@ -447,6 +547,104 @@ function openLightbox(key,title){const src=PROJ_SRCS[key];if(!src)return;documen
 function closeLightbox(){document.getElementById('lightbox').classList.remove('open');document.getElementById('lightboxFrame').src='';document.body.style.overflow='';}
 document.getElementById('lightbox').addEventListener('click',function(e){if(e.target===this)closeLightbox();});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLightbox();});
+
+// ── Cinematic Hero
+(function(){
+  if(typeof gsap==='undefined'||typeof ScrollTrigger==='undefined') return;
+  gsap.registerPlugin(ScrollTrigger);
+
+  /* Escala los iframes para que llenen su contenedor */
+  function sizeIframes(){
+    const screen=document.querySelector('.h-screen');
+    const li=document.getElementById('laptopIframe');
+    if(screen&&li){
+      const sw=screen.offsetWidth, sh=screen.offsetHeight;
+      const sc=sw/1440;
+      li.style.transform='scale('+sc+')';
+      li.style.height=(sh/sc)+'px';
+    }
+    const ri=document.getElementById('revealIframe');
+    if(ri){
+      const vw=window.innerWidth, vh=window.innerHeight;
+      const sc=vw/1440;
+      ri.style.transform='scale('+sc+')';
+      ri.style.height=(vh/sc)+'px';
+    }
+  }
+  window.addEventListener('resize',sizeIframes);
+
+  /* Partículas sutiles */
+  (function initParticles(){
+    const cv=document.getElementById('heroCanvas');
+    if(!cv) return;
+    const ctx=cv.getContext('2d');
+    let W,H,pts=[];
+    const N=60;
+    function resize(){W=cv.width=cv.offsetWidth;H=cv.height=cv.offsetHeight;}
+    function mkPt(){return{x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.4+.3,vx:(Math.random()-.5)*.28,vy:(Math.random()-.5)*.28,a:Math.random()*.45+.1,p:Math.random()*Math.PI*2,ps:.006+Math.random()*.013};}
+    resize();
+    window.addEventListener('resize',resize);
+    for(let i=0;i<N;i++) pts.push(mkPt());
+    (function draw(){
+      ctx.clearRect(0,0,W,H);
+      pts.forEach(p=>{
+        p.p+=p.ps;
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+        ctx.fillStyle='rgba(74,99,255,'+(p.a*(.55+.45*Math.sin(p.p)))+')';
+        ctx.fill();
+        p.x+=p.vx; p.y+=p.vy;
+        if(p.x<-5) p.x=W+5; if(p.x>W+5) p.x=-5;
+        if(p.y<-5) p.y=H+5; if(p.y>H+5) p.y=-5;
+      });
+      requestAnimationFrame(draw);
+    })();
+  })();
+
+  /* Timeline de scroll */
+  requestAnimationFrame(function(){
+    sizeIframes();
+    const sc=document.querySelector('.hero-sc');
+    if(!sc) return;
+
+    /* Estados iniciales */
+    gsap.set('#hText',{scale:1,opacity:1,y:0});
+    gsap.set('#hLaptop',{opacity:0,y:72,scale:.91});
+    gsap.set('#hLid',{scaleY:.06,transformOrigin:'bottom center'});
+    gsap.set('#hScreen',{clipPath:'inset(100% 0% 0% 0%)'});
+    gsap.set('#hReveal',{opacity:0});
+    gsap.set('#hScrollHint',{opacity:1});
+
+    const tl=gsap.timeline({
+      scrollTrigger:{
+        trigger:sc,
+        start:'top top',
+        end:'bottom bottom',
+        scrub:1.4
+      }
+    });
+
+    /* Fase 1 → texto se reduce (0–30%) */
+    tl.to('#hText',{scale:.35,opacity:0,y:-26,ease:'none',duration:.30},0);
+    tl.to(['#hGlow','#heroCanvas'],{opacity:0,ease:'none',duration:.22},0);
+    tl.to('#hScrollHint',{opacity:0,ease:'none',duration:.14},0);
+
+    /* Fase 2 → laptop sube (10–43%) */
+    tl.to('#hLaptop',{opacity:1,y:0,scale:1,ease:'power1.out',duration:.33},0.10);
+
+    /* Fase 3a → lid se abre (30–52%) */
+    tl.to('#hLid',{scaleY:1,ease:'power2.inOut',duration:.22},0.30);
+
+    /* Fase 3b → screen se revela (44–57%) */
+    tl.to('#hScreen',{clipPath:'inset(0% 0% 0% 0%)',ease:'power1.inOut',duration:.13},0.44);
+
+    /* Fase 4 → laptop se expande y desaparece (58–80%) */
+    tl.to('#hLaptop',{scale:5.2,opacity:0,ease:'power2.in',duration:.22},0.58);
+
+    /* Fase 5 → reveal a pantalla completa (66–88%) */
+    tl.to('#hReveal',{opacity:1,ease:'power1.in',duration:.22},0.66);
+  });
+})();
 
 // ── Binary Rain
 (function(){
